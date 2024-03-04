@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Tareas</title>
+  <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body>
-    <script src="./js/main.js"></script>
+  <h1>Gestor de Tareas</h1>
+  
+  <div id="app">
+    <input type="text" id="inputTarea" placeholder="Escribe una nueva tarea...">
+    <button onclick="agregarTarea()">Agregar</button>
+    <ul id="listaTareas"></ul>
+  </div>
+  
+  <script src="./js/main.js"></script>
 </body>
 </html>

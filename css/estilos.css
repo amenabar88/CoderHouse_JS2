@@ -1,0 +1,16 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  #app {
+    margin-top: 20px;
+  }
+  
+  ul {
+    list-style-type: none;
+  }
+  
+  .completed {
+    text-decoration: line-through;
+  }
+  

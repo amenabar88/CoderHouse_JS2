@@ -1,48 +1,50 @@
-function verificarEdad (edad){
-    return edad >= 18;
+// Variables
+let tareas = [];
+
+// Funciones
+function agregarTarea() {
+  let inputTarea = document.getElementById('inputTarea');
+  let tarea = inputTarea.value.trim();
+  
+  if (tarea !== '') {
+    tareas.push({ tarea: tarea, completada: false });
+    inputTarea.value = '';
+    actualizarListaTareas();
+  } else {
+    alert('Por favor, ingresa una tarea válida.');
+  }
 }
 
-function valores (monto, cuotas){
-    return monto > 0 && cuotas > 0;
+function eliminarTarea(index) {
+  tareas.splice(index, 1);
+  actualizarListaTareas();
 }
 
-function calcularIntereses (monto, cuotas){
-    const tasaInteresAnual = 0.1;
-    const totalItereses = monto * tasaInteresAnual * cuotas;
-    return totalItereses
+function toggleCompletada(index) {
+  tareas[index].completada = !tareas[index].completada;
+  actualizarListaTareas();
 }
 
-do{
-    alert ("El mejor lugar para solicitar un prestamo");
+function actualizarListaTareas() {
+  let listaTareas = document.getElementById('listaTareas');
+  listaTareas.innerHTML = '';
 
-    let menu = false
-    let edad = prompt ("Por favor, indique su edad");
-
-    if (verificarEdad(edad)){
-        alert("Es mayor de edad, puede continuar");
-        menu = true
-    } else{
-        alert ("Error. Debes ser mayor de edad para solicitar un prestamo")
+  tareas.forEach((tarea, index) => {
+    let li = document.createElement('li');
+    li.textContent = tarea.tarea;
+    if (tarea.completada) {
+      li.classList.add('completed');
     }
-    if (menu){
-        let monto;
-        let cuotas;
-        do{
-            monto = prompt ("Ingrese el monto que desea:");
-            cuotas = prompt ("Ingrese la cantidad de cuotas");
-        }while (!valores(monto, cuotas));
-        const interes = calcularIntereses (parseInt(monto), parseInt (cuotas));
+    li.addEventListener('click', () => toggleCompletada(index));
     
-        const montoTotal = parseInt(monto) + interes;
-        
-        alert (`El interés total del préstamo es: ${interes}`);
-        
-        alert (`El monto total del préstamo es: ${montoTotal}`);
-    
-        const continuar = confirm("¿Desea realizar otra operación?")
-        if (!continuar){
-            alert ("gracias por usar nuestra plataforma. Que tenga buen dia");
-            break;
-    }
-    }
-}while (true);
+    let botonEliminar = document.createElement('button');
+    botonEliminar.textContent = 'Eliminar';
+    botonEliminar.addEventListener('click', (event) => {
+      event.stopPropagation();
+      eliminarTarea(index);
+    });
+
+    li.appendChild(botonEliminar);
+    listaTareas.appendChild(li);
+  });
+}
