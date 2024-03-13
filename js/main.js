@@ -1,50 +1,60 @@
-// Variables
+// Array para almacenar las tareas
 let tareas = [];
 
-// Funciones
+// Función para agregar una tarea
 function agregarTarea() {
-  let inputTarea = document.getElementById('inputTarea');
-  let tarea = inputTarea.value.trim();
-  
-  if (tarea !== '') {
-    tareas.push({ tarea: tarea, completada: false });
-    inputTarea.value = '';
-    actualizarListaTareas();
+  let nuevaTarea = prompt("Ingrese una nueva tarea:");
+  if (nuevaTarea) {
+    tareas.push({ tarea: nuevaTarea, completada: false });
+    console.log("Tarea agregada correctamente.");
   } else {
-    alert('Por favor, ingresa una tarea válida.');
+    alert("Por favor, ingrese una tarea válida.");
   }
 }
 
-function eliminarTarea(index) {
-  tareas.splice(index, 1);
-  actualizarListaTareas();
-}
-
-function toggleCompletada(index) {
-  tareas[index].completada = !tareas[index].completada;
-  actualizarListaTareas();
-}
-
-function actualizarListaTareas() {
-  let listaTareas = document.getElementById('listaTareas');
-  listaTareas.innerHTML = '';
-
-  tareas.forEach((tarea, index) => {
-    let li = document.createElement('li');
-    li.textContent = tarea.tarea;
-    if (tarea.completada) {
-      li.classList.add('completed');
-    }
-    li.addEventListener('click', () => toggleCompletada(index));
-    
-    let botonEliminar = document.createElement('button');
-    botonEliminar.textContent = 'Eliminar';
-    botonEliminar.addEventListener('click', (event) => {
-      event.stopPropagation();
-      eliminarTarea(index);
+// Función para mostrar todas las tareas
+function mostrarTareas() {
+  if (tareas.length === 0) {
+    alert("No hay tareas para mostrar.");
+  } else {
+    console.log("Tareas:");
+    tareas.forEach((tarea, index) => {
+      console.log(`${index + 1}. ${tarea.tarea} - ${tarea.completada ? "Completada" : "Pendiente"}`);
     });
+  }
+}
 
-    li.appendChild(botonEliminar);
-    listaTareas.appendChild(li);
-  });
+// Función para eliminar una tarea
+function eliminarTarea() {
+  let indice = parseInt(prompt("Ingrese el número de la tarea que desea eliminar:")) - 1;
+  if (!isNaN(indice) && indice >= 0 && indice < tareas.length) {
+    tareas.splice(indice, 1);
+    console.log("Tarea eliminada correctamente.");
+  } else {
+    alert("Ingrese un número de tarea válido.");
+  }
+}
+
+// Función para marcar una tarea como completada
+function marcarCompletada() {
+  let indice = parseInt(prompt("Ingrese el número de la tarea que desea marcar como completada:")) - 1;
+  if (!isNaN(indice) && indice >= 0 && indice < tareas.length) {
+    tareas[indice].completada = true;
+    console.log("Tarea marcada como completada correctamente.");
+  } else {
+    alert("Ingrese un número de tarea válido.");
+  }
+}
+
+// Función para mostrar solo las tareas completadas
+function mostrarTareasCompletadas() {
+  let tareasCompletadas = tareas.filter(tarea => tarea.completada);
+  if (tareasCompletadas.length === 0) {
+    alert("No hay tareas completadas para mostrar.");
+  } else {
+    console.log("Tareas Completadas:");
+    tareasCompletadas.forEach((tarea, index) => {
+      console.log(`${index + 1}. ${tarea.tarea}`);
+    });
+  }
 }
