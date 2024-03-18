@@ -7,15 +7,20 @@
   <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body>
-  <h1>Gestor de Tareas</h1>
-  
-  <div id="app">
-    <button onclick="agregarTarea()">Agregar</button>
-    <button onclick="mostrarTareas()">Mostrar Tareas</button>
-    <button onclick="eliminarTarea()">Eliminar Tarea</button>
-    <button onclick="marcarCompletada()">Marcar como Completada</button>
-    <button onclick="mostrarTareasCompletadas()">Mostrar Tareas Completadas</button>
-    <ul id="listaTareas"></ul>
+  <div class="container">
+    <header>
+      <h1>Gestor de Tareas</h1>
+      <p>Agrega, elimina y marca tareas como completadas</p>
+    </header>
+    <main>
+      <div class="form">
+        <input type="text" id="inputTarea" placeholder="Escribe una nueva tarea...">
+        <button onclick="agregarTarea()">Agregar Tarea</button>
+      </div>
+      <ul id="listaTareas" class="lista-tareas"></ul>
+    </main>
+    <footer>
+    </footer>
   </div>
   
   <script src="./js/main.js"></script>

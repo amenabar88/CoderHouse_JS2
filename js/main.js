@@ -1,60 +1,73 @@
-// Array para almacenar las tareas
 let tareas = [];
 
-// Función para agregar una tarea
+function guardarTareasEnStorage() {
+  localStorage.setItem('tareas', JSON.stringify(tareas));
+}
+
+function cargarTareasDesdeStorage() {
+  const tareasGuardadas = JSON.parse(localStorage.getItem('tareas'));
+  if (tareasGuardadas) {
+    tareas = tareasGuardadas;
+    actualizarListaTareas();
+  }
+}
+
+function actualizarListaTareas() {
+  let listaTareas = document.getElementById('listaTareas');
+  listaTareas.innerHTML = '';
+
+  tareas.forEach((tarea, index) => {
+    let li = document.createElement('li');
+    li.textContent = tarea.tarea;
+    if (tarea.completada) {
+      li.classList.add('completed');
+    }
+    li.addEventListener('click', () => toggleCompletada(index));
+    
+    let botonEliminar = document.createElement('button');
+    botonEliminar.textContent = 'Eliminar';
+    botonEliminar.addEventListener('click', (event) => {
+      event.stopPropagation();
+      eliminarTarea(index);
+    });
+
+    li.appendChild(botonEliminar);
+    listaTareas.appendChild(li);
+  });
+}
+
 function agregarTarea() {
-  let nuevaTarea = prompt("Ingrese una nueva tarea:");
-  if (nuevaTarea) {
+  let nuevaTarea = document.getElementById('inputTarea').value.trim();
+  if (nuevaTarea !== '') {
     tareas.push({ tarea: nuevaTarea, completada: false });
-    console.log("Tarea agregada correctamente.");
+    guardarTareasEnStorage();
+    actualizarListaTareas();
+    mostrarMensaje('Tarea agregada correctamente', 'success');
+    document.getElementById('inputTarea').value = '';
   } else {
-    alert("Por favor, ingrese una tarea válida.");
+    mostrarMensaje('Por favor, ingrese una tarea válida', 'error');
   }
 }
 
-// Función para mostrar todas las tareas
-function mostrarTareas() {
-  if (tareas.length === 0) {
-    alert("No hay tareas para mostrar.");
-  } else {
-    console.log("Tareas:");
-    tareas.forEach((tarea, index) => {
-      console.log(`${index + 1}. ${tarea.tarea} - ${tarea.completada ? "Completada" : "Pendiente"}`);
-    });
-  }
+function eliminarTarea(index) {
+  tareas.splice(index, 1);
+  guardarTareasEnStorage();
+  actualizarListaTareas();
 }
 
-// Función para eliminar una tarea
-function eliminarTarea() {
-  let indice = parseInt(prompt("Ingrese el número de la tarea que desea eliminar:")) - 1;
-  if (!isNaN(indice) && indice >= 0 && indice < tareas.length) {
-    tareas.splice(indice, 1);
-    console.log("Tarea eliminada correctamente.");
-  } else {
-    alert("Ingrese un número de tarea válido.");
-  }
+function toggleCompletada(index) {
+  tareas[index].completada = !tareas[index].completada;
+  guardarTareasEnStorage();
+  actualizarListaTareas();
 }
 
-// Función para marcar una tarea como completada
-function marcarCompletada() {
-  let indice = parseInt(prompt("Ingrese el número de la tarea que desea marcar como completada:")) - 1;
-  if (!isNaN(indice) && indice >= 0 && indice < tareas.length) {
-    tareas[indice].completada = true;
-    console.log("Tarea marcada como completada correctamente.");
-  } else {
-    alert("Ingrese un número de tarea válido.");
-  }
-}
+function mostrarMensaje(mensaje, tipo) {
+  let divMensaje = document.createElement('div');
+  divMensaje.className = `mensaje ${tipo}`;
+  divMensaje.textContent = mensaje;
+  document.body.insertBefore(divMensaje, document.querySelector('.container'));
 
-// Función para mostrar solo las tareas completadas
-function mostrarTareasCompletadas() {
-  let tareasCompletadas = tareas.filter(tarea => tarea.completada);
-  if (tareasCompletadas.length === 0) {
-    alert("No hay tareas completadas para mostrar.");
-  } else {
-    console.log("Tareas Completadas:");
-    tareasCompletadas.forEach((tarea, index) => {
-      console.log(`${index + 1}. ${tarea.tarea}`);
-    });
-  }
+  setTimeout(() => {
+    divMensaje.remove();
+  }, 3000);
 }
